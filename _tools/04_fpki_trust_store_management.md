@@ -2,7 +2,7 @@
 layout: default 
 title: Federal PKI Trust Store Management Script
 collection: tools
-permalink: tools/trust_store_management/
+permalink: tools/
 ---
 # Trust Store Management Script
 
