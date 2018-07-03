@@ -24,9 +24,9 @@ Script output can be used to standardize and streamline existing agency trust st
 - [Frequently asked questions](#faqs)
 
 ### Download Location
-**Version 1** of the Trust Store Management Script can be downloaded from this [link](TSMS-V1/Trust_Store_Mangagement_Script_V1.zip).
+Version 1 of the Trust Store Management Script can be downloaded from this [link](TSMS-V1/Trust_Store_Mangagement_Script_V1.zip).
 
-####To ensure authenticity, please verify the package SHA-256 hash matches the below:
+#### To ensure authenticity, please verify the package SHA-256 hash matches the below:
 ```
     EC2A7159E42CCA958190E50B18C6B35009234FD23B160731245239A09B36751A
 ```
@@ -34,11 +34,6 @@ Script output can be used to standardize and streamline existing agency trust st
 #### Verifying hash on Windows using certutil...
 ```
     > certutil -hashfile [DOWNLOAD_LOCATION]\Trust_Store_Mangagement_Script_V1.zip SHA256
-```
-
-#### Verifying hash on Windows using Powershell...
-```
-    > Get-FileHash [DOWNLOAD_LOCATION]\Trust_Store_Mangagement_Script_V1.zip | Format-List
 ```
 
 #### Verifying hash on macOS using Terminal…
