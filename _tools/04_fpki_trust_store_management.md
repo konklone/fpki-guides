@@ -81,7 +81,7 @@ By default, all included CAs are marked for installation. Changing the installat
 
 The list of CAs included for installation in this script are presented below.
 
-| ID    | Subject                                                  | Issuer                                | ValidFrom        | ValidTo          | SerialNumber                             |
+| ID    | Subject                                                  | Issuer                                | Valid From        | Valid To          | Serial Number                             |
 |-------|----------------------------------------------------------|---------------------------------------|------------------|------------------|------------------------------------------|
 | 00001 | Betrusted Production   SSP CA A1                         | Federal Common Policy   CA            | 12/9/2010 19:55  | 12/9/2020 19:49  | 19A                                      |
 | 00002 | Bureau of the Census   Agency CA                         | Symantec SSP   Intermediate CA - G4   | 7/30/2015 0:00   | 11/11/2024 23:59 | 2355994850457C656B1B9A58E3FC3F98         |
