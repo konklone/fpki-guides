@@ -24,7 +24,7 @@ Script output can be used to standardize and streamline existing agency trust st
 - [Frequently asked questions](#faqs)
 
 ### Download Location
-Version 1 of the Trust Store Management Script can be downloaded from this [link](/tools/TSMS-V1/Trust_Store_Mangagement_Script_V1.zip).
+Version 1 of the Trust Store Management Script can be downloaded from this [link](tools/TSMS-V1/Trust_Store_Mangagement_Script_V1.zip).
 
 #### To ensure authenticity, please verify the package SHA-256 hash matches the below:
 ```
@@ -580,12 +580,12 @@ THUMBPRINT: 671461948b8ef765fe5e1248222af3fcdd457564
 An installation file has been created at: C:\Users\Joe.User\Desktop\tsmt-output.p7b
 ```
 
-The sample output file created in the example above is found [here](/tools/TSMS-V1/sample-tsmt-output.p7b).
+The sample output file created in the example above is found [here](tools/TSMS-V1/sample-tsmt-output.p7b).
 
 #### Sample Output - macOS
 [TO-DO] - Capture macOS output.
 
-The sample output file created in the example above is found [here](/tools/TSMS-V1/sample-tsmt-output.mobileconfig).
+The sample output file created in the example above is found [here](tools/TSMS-V1/sample-tsmt-output.mobileconfig).
 
     
 ### FAQs
