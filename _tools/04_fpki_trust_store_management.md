@@ -4,9 +4,7 @@ title: Federal PKI Trust Store Management Script
 collection: tools
 permalink: tools/trust_store_management/
 ---
-# Trust Store Management Script
-
-The Trust Store Management Script (TSMS) was designed to help update operating system trust stores to facilitate smart card logon for PIV users. The script was designed to run using Python 3.x on Windows or macOS. 
+The Trust Store Management Script (TSMS) was designed to help update operating system trust stores to facilitate smart card logon for PIV users. The script was designed to run using Python 3.x on Windows and macOS. 
 
 The execution of the script will vary dependent upon operating system. 
 - **On Windows** the script will assemble a .p7b file containing all operator desired PIV issuer certification authority (CA) signing certificates. 
@@ -52,8 +50,8 @@ Version 1 of the Trust Store Management Script can be downloaded from this [link
 
 #### For each CA, the following attributes are included:
 - **ID**: Contains a unique integer ID for the CA
-- **SUBJECT**: Contains the CA’s subject name.
-- **ISSUER**:  Contains the CA’s issuer.
+- **SUBJECT**: Contains the CA’s subject name
+- **ISSUER**:  Contains the CA’s issuer
 - **VALIDFROM**:  Contains the validity start date for the certificate
 - **VALIDTO**:  Contains the validity end date for the certificate
 - **SERIAL**: Contains the certificate’s serial number
@@ -79,7 +77,7 @@ By default, all included CAs are marked for installation. Changing the installat
 
 ### Target Certification Authorities
 
-The list of CAs included for installation in this script are presented below.
+The list of CAs included for installation in this script is presented below.
 
 | ID    | Subject                                                  | Issuer                                | Valid From        | Valid To          | Serial Number                             |
 |-------|----------------------------------------------------------|---------------------------------------|------------------|------------------|------------------------------------------|
@@ -130,14 +128,14 @@ The list of CAs included for installation in this script are presented below.
 | 00045 | Veterans Affairs User   CA B1                            | Betrusted Production   SSP CA A1      | 8/7/2008 15:08   | 8/7/2018 15:04   | 1C5E                                     |
 | 00046 | Veterans Affairs User   CA B1                            | Verizon SSP CA A2                     | 1/25/2017 4:59   | 1/25/2027 4:59   | 251EA36536CFEBB0E9D1334D0CB96102BAB16589 |
 
-If you feel another CA should be included, let us know!
+If you feel another CA should be included, let us know by emailing us at fpki@gsa.gov!
 
 
 ### System requirements
 
 Python v3.x is required to run the Trust Store Management Script. Additionally, on Windows, OpenSSL needs to be installed with an environment path variable set to support .p7b file generation.
 
-Your feedback is valued to us. If you have any questions or recommended updates for this script, please contact us at fpki@gsa.gov.
+Your feedback is valued. If you have any questions or recommended updates for this script, please contact us at fpki@gsa.gov.
 
 ### Running the script
 1. [Download](#download-location) the script .zip file and verify its hash
@@ -587,7 +585,7 @@ The sample output file created in the example above is found [here](../../tools/
 
 The sample output file created in the example above is found [here](../../tools/TSMS-V1/sample-tsmt-output.mobileconfig).
 
-    
+
 ### FAQs
 #### How often will it be updated?
 We anticipate this script being updated quarterly. 
