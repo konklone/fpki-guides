@@ -50,7 +50,7 @@ You may see two (or more) copies of COMMON, depending on how it is being distrib
 ![Sample Steps]({{site.baseurl}}/img/verify_trust.png){:style="width:85%;"}
 
 In the screenshot above, we see three entries for COMMON:
-- The first entry (surrounded by a “dashed” line) is being populated from the Microsoft CTL. Note the values associated with *Intended Purposes* and *Friendly Name*.
+- The first entry (surrounded by a “dashed” line) is being populated from the Microsoft CTL. Note the values associated with **Intended Purposes** and **Friendly Name**.
 - The remaining two entries result from following the procedures in this Playbook.
 
 
