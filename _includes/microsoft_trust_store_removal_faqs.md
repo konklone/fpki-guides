@@ -41,11 +41,7 @@ No. COMMON’s certificate will not change. The only change will be in how COMMO
 
      **Start**, type **certmgr.msc**, and then press **Enter**
 
-2. Display physical certificate stores 
-
-     **View** -> **Options** -> ensure the Physical certificate stores entry is *checked*
-
-3. Navigate to **Trusted Root Certification Authorities** -> **Certificates** 
+2. Navigate to **Trusted Root Certification Authorities** -> **Certificates** 
 
 
 You may see two (or more) copies of COMMON, depending on how it is being distributed.
