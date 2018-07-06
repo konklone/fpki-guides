@@ -37,31 +37,29 @@ No. COMMON’s certificate will not change. The only change will be in how COMMO
 
 ### How can I verify that COMMON has been redistributed to my system?
 
-1. Open Microsoft Certificate Viewer
+1. Open Microsoft Certificate Viewer:  **Start**, type **certmgr.msc**, and then press **Enter**.
 
-     **Start**, type **certmgr.msc**, and then press **Enter**
-
-2. Navigate to **Trusted Root Certification Authorities** -> **Certificates** 
+2. Navigate to **Trusted Root Certification Authorities** -> **Certificates**. 
 
 
 You may see two (or more) copies of COMMON, depending on how it is being distributed.
 
-Typically, **enterprise** distributed copies will be presented with an Intended Purposes value of *ALL* and a Friendly Name of *None*.
-**Microsoft** distributed copies will be presented with multiple Intended Purposes values and a Friendly Name of *U.S. Government Common Policy*.
+* Typically, **enterprise** distributed copies will be presented with an **Intended Purposes** value of *ALL* and a **Friendly Name** of *None*.
+* **Microsoft** distributed copies will be presented with multiple **Intended Purposes** values and a **Friendly Name** of *U.S. Government Common Policy*.
 
 ![Sample Steps]({{site.baseurl}}/img/verify_trust.png){:style="width:85%;"}
 
-In the screenshot above, we see three entries for COMMON.
-- The first entry (surrounded by a “dashed” line) is being populated from the Microsoft CTL. Note the values associated with Intended Purposes and Friendly Name.
-- The remaining two entries resulted from following procedures in this Playbook.
+In the screenshot above, we see three entries for COMMON:
+- The first entry (surrounded by a “dashed” line) is being populated from the Microsoft CTL. Note the values associated with *Intended Purposes* and *Friendly Name*.
+- The remaining two entries result from following the procedures in this Playbook.
 
 
-### My agency gets PIV cards from [Issuer Name]. I won’t be affected by this, right?
+### My agency gets PIV cards from [Issuer Name]. I won’t be affected by this change, right?
 
-Incorrect. Your PIV credential issuer has no impact on whether your agency is affected by this change. The impact is related to how COMMON is distributed to federal enterprise devices by agency-specific configuration management practices.  It is not related to how credentials are generated or issued.
+Incorrect. Your PIV credential issuer has no impact on whether your agency is affected by this change. The impact is related to how COMMON is distributed to federal enterprise devices by agency-specific, configuration management practices.  It is not related to how credentials are generated or issued.
 
 
-### How can I test the impact of Microsoft’s removal of the Federal Common Policy CA (COMMON)?
+### How can I test the impact of Microsoft’s removal of COMMON?
 
 It is possible to simulate the Microsoft certificate store’s future state.  It is **not** recommended due to the potential for **destructive outcomes**. If interested in learning more, please contact us at fpki@gsa.gov.
 
