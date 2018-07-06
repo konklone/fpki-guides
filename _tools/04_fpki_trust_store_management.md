@@ -581,7 +581,8 @@ An installation file has been created at: C:\Users\Joe.User\Desktop\tsmt-output.
 The sample output file created in the example above is found [here](../../tools/TSMS-V1/sample-tsmt-output.p7b).
 
 #### Sample Output - macOS
-[TO-DO] - Capture macOS output.
+
+Output for running the Trust Store Management Script on macOS is the same as listed above for Windows.
 
 The sample output file created in the example above is found [here](../../tools/TSMS-V1/sample-tsmt-output.mobileconfig).
 
