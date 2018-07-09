@@ -9,6 +9,13 @@ To help you update Microsoft and Apple operating system trust stores and enable 
 
 {% include alert-info.html content="You must be a network engineer or admnistrator to run this script. You'll need to be familiar with Python 3.x for Windows and/or macOS and iOS." %}
 
+- [System Requirements](#system-requirements)
+- [Download Location](#download-location)
+- [How It Works](#how-it-works)
+- [Default Set of Certification Authority Certificates](#default-set-of-certification-authority-certificates)
+- [Run the Script](#run-the-script)
+- [FAQs](#faqs)
+
 ### System Requirements
 
 #### Microsoft Windows
@@ -19,12 +26,6 @@ To help you update Microsoft and Apple operating system trust stores and enable 
 #### Apple macOS and iOS
 
 * macOS and iOS:  Python v3.x
-
-- [Download Location](#download-location)
-- [How It Works](#how-it-works)
-- [Default Set of Certification Authority Certificates](#default-set-of-certification-authority-certificates)
-- [Run the Script](#run-the-script)
-- [FAQs](#faqs)
 
 ### Download Location
 
@@ -164,11 +165,11 @@ The default set of Certification Authority certificates is shown below.
     $ certLoader.py
     ```
     
-1. The You'll see the output file will appear ...on your Desktop, unless the location was changed in certLoader.py
+1. You'll see the output file appear on your Desktop, unless you changed the file destination in certLoader.py.
 
 #### Windows Example Output (.p7b)
 
-A hypothetical Windows user (Joe) selected a set of 46 certifications authorities using the _TRUE_/_FALSE_ method. Here is the output he saw:
+A hypothetical Windows user (Joe) selected the following set of 46 Certification Authority certificates using the _TRUE_/_FALSE_ method. Here is the output he received:
 
 ```
 C:\Users\Joe.User\Desktop\Trust_Store_Mangagement_Script_V1>certLoader.py
@@ -608,11 +609,8 @@ Quarterly or as often as needed.
 
 #### How can I give feedback or suggestions?
 
-We welcome your feedback. You can comment or contribute in these ways: 
+We welcome your feedback and contributions! Please reach out through GSA's GitHub [FPKI Guides issues](https://github.com/GSA/fpki-guides/issues){:target="_blank"} or email us at **fpki@gsa.gov**.
 
-* Create a new issue: GSA's GitHub [FPKI Guides issues](https://github.com/GSA/fpki-guides/issues){:target="_blank"}.
-* Email us:  **fpki@gsa.gov**.
+#### Where can I get help?
 
-#### How can I get help?
-
-We're here for you.  Email us at fpki@gsa.gov **icam@gsa.gov?**
+Email us at fpki@gsa.gov **icam@gsa.gov?** We're here for you!
