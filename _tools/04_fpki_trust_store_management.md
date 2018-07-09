@@ -4,63 +4,74 @@ title: Federal PKI Trust Store Management Script
 collection: tools
 permalink: tools/trust_store_management/
 ---
-The Trust Store Management Script (TSMS) was designed to help update operating system trust stores to facilitate smart card logon for PIV users. The script was designed to run using Python 3.x on Windows and macOS. 
 
-The execution of the script will vary dependent upon operating system. 
-- **On Windows** the script will assemble a .p7b file containing all operator desired PIV issuer certification authority (CA) signing certificates. 
-- **On macOS** the script will assemble an Apple Configuration Profile (.mobileconfig) containing all operator desired PIV issuer certification authority (CA) signing certificates. 
+To help you update Microsoft and Apple operating system trust stores and enable PIV login for agency users, you can run this Trust Store Management Script. The script produces a .p7b file for Windows and a .mobileconfig file for macOS and iOS. You can publish these files to devices or share them via an agency intranet website. <!--Is this info correct as reworded? If FNR-related, DHS preference was to use the term, "certificate stores."-->
 
-Script output can be used to standardize and streamline existing agency trust store management processes. For example, on Windows, the resulting .p7b file could be published to domain controllers via certutil or a GPO. On macOS or iOS, the resulting .mobileconfig file could be shared on an agency intranet site or distributed to devices in one of the methods described [here](https://fpki.idmanagement.gov/truststores/apple/#installation-options/){:target="_blank"}. 
+{% include alert-info.html content="You must be a network engineer or admnistrator to run this script. You'll need to be familiar with Python 3.x for Windows and/or macOS and iOS." %}
 
+### System Requirements
 
-### Please see the sections below for more information on the script:
-- [Download location](#download-location)
-- [How it works](#how-it-works)
-- [Target Certification Authorities](#target-certification-authorities)
-- [System requirements](#system-requirements)
-- [Running the script](#running-the-script)
-- [Frequently asked questions](#faqs)
+#### Microsoft Windows
+
+* Python v3.x
+* OpenSSL with an environment path variable set to support .p7b file generation <!--Where and what is the exact setting name? Specific term(s) is better for reader. "An Environment path variable set to support...generation" is quite wordy.-->
+
+#### Apple macOS and iOS
+
+* macOS and iOS:  Python v3.x
+
+- [Download Location](#download-location)
+- [How It Works](#how-it-works)
+- [Default Set of Certification Authority Certificates](#default-set-of-certification-authority-certificates)
+- [Run the Script](#run-the-script)
+- [FAQs](#faqs)
 
 ### Download Location
+
 Version 1 of the Trust Store Management Script can be downloaded from this [link](../../tools/TSMS-V1/Trust_Store_Mangagement_Script_V1.zip).
 
-#### To ensure authenticity, please verify the package SHA-256 hash matches the below:
+#### To ensure authenticity, please verify that the package SHA-256 hash is:
 ```
     EC2A7159E42CCA958190E50B18C6B35009234FD23B160731245239A09B36751A
 ```
 
-#### Verifying hash on Windows using certutil...
+#### Verify the hash on Windows using _certutil_:
 ```
     > certutil -hashfile [DOWNLOAD_LOCATION]\Trust_Store_Mangagement_Script_V1.zip SHA256
 ```
 
-#### Verifying hash on macOS using Terminal…
+#### Verify the hash on macOS using Terminal:
 ```
     $ shasum -a 256 [DOWNLOAD_LOCATION]/Trust_Store_Mangagement_Script_V1.zip
 ```
 
 
-### How it works
+### How It Works
+
+- **Microsoft Windows**&nbsp;&mdash;&nbsp;This script compiles a .p7b file of your chosen set of PIV Issuer, Certification Authority (CA) signing certificates<!--This seems to be saying "the network engineer's selected CA signing certificates issued to PIV Issuers, but is unclear.  Is this correct?-->. You can publish the file to domain controllers via _certutil_ or a group policy object (GPO). This could help you standardize agency trust store management processes.<!--Last sentence: do they know this already? Are we telling them how to do their jobs?-->
+
+- **Apple macOS and iOS**&nbsp;&mdash;&nbsp;This script compiles an Apple Configuration Profile (.mobileconfig) of your chosen set of PIV Issuer, CA signing certificates.<!--Same question about PIV Issuers in MS above.-->You can distribute the .mobileconfig file to devices or share it on an agency intranet website.For details, see Apple [Installation Options](https://fpki.idmanagement.gov/truststores/apple/#installation-options/){:target="_blank"}.
 
 #### The TSMS installation package (Trust_Store_Mangagement_Script_V1.zip) contains three artifacts:
-1. **certLoader.py** - This script reads in the targets.json installation file and assembles the output file containing the desired CA certificates.
-1. **id-fpki-common-auth** - This directory contains CA certificates for the eligible installation targets. 
-1. **targets.json** - This JSON file contains attributes for the potential CA installation targets. More information is presented below.
+1. **certLoader.py** - (Script) reads in the targets.json installation file and compiles the output file with the chosen CA certificates.
+1. **id-fpki-common-auth** - (Directory) contains CA certificates for the eligible installation targets. 
+1. **targets.json** - (JSON) contains attributes for the potential CA installation targets.
 
 
-#### For each CA, the following attributes are included:
-- **ID**: Contains a unique integer ID for the CA
-- **SUBJECT**: Contains the CA’s subject name
-- **ISSUER**:  Contains the CA’s issuer
-- **VALIDFROM**:  Contains the validity start date for the certificate
-- **VALIDTO**:  Contains the validity end date for the certificate
-- **SERIAL**: Contains the certificate’s serial number
-- **FILENAME**: Contains the certificate’s file name
-- **THUMBPRINT**: Contains the certificate’s thumbprint (SHA-1 hash)
-- **INSTALL**: Contains the installation flag (either TRUE or FALSE)
+#### Attributes included for each CA certificate
+
+- **ID**: A unique integer ID (CA)
+- **SUBJECT**: CA subject name
+- **ISSUER**:  CA issuer
+- **VALIDFROM**:  Certificate validity start date
+- **VALIDTO**:  Certificate validity end date
+- **SERIAL**: Certificate serial number
+- **FILENAME**: Certificate file name
+- **THUMBPRINT**: Certificate thumbprint (SHA-1 hash)
+- **INSTALL**: Installation flag (either TRUE or FALSE)
 
 
-#### Sample below:
+#### Attributes example<!--End commas essential? (Code?) There are no commas in attribute list above. Recommend deleting commas.-->:
 ```
     "ID": "00001",
     "SUBJECT": "Betrusted Production SSP CA A1",
@@ -73,11 +84,15 @@ Version 1 of the Trust Store Management Script can be downloaded from this [link
     "INSTALL": "TRUE"
 ```
 
-By default, all included CAs are marked for installation. Changing the installation flag from *TRUE* to *FALSE* will result in a given CA being omitted from the output file.
+{% include alert-info.html content="All listed CA certificates are installed for the default set. If you want to OMIT specific CA certificates, set their installation flags to FALSE." %}
 
-### Target Certification Authorities
 
-The list of CAs included for installation in this script is presented below.
+### Default Set of Certification Authority Certificates
+
+The default set of Certification Authority certificates is shown below.
+
+{% include alert-info.html content="If your agency wants to add Certification Authority certificates to this list, please email us at fpki@gsa.gov." %}
+
 
 | ID    | Subject                                                  | Issuer                                | Valid From        | Valid To          | Serial Number                             |
 |-------|----------------------------------------------------------|---------------------------------------|------------------|------------------|------------------------------------------|
@@ -128,33 +143,32 @@ The list of CAs included for installation in this script is presented below.
 | 00045 | Veterans Affairs User   CA B1                            | Betrusted Production   SSP CA A1      | 8/7/2008 15:08   | 8/7/2018 15:04   | 1C5E                                     |
 | 00046 | Veterans Affairs User   CA B1                            | Verizon SSP CA A2                     | 1/25/2017 4:59   | 1/25/2027 4:59   | 251EA36536CFEBB0E9D1334D0CB96102BAB16589 |
 
-If you feel another CA should be included, let us know by emailing us at fpki@gsa.gov!
 
+### Run the Script
+1. [Download](#download-location) the script .zip file and verify its hash.
+1. Unpack the .zip file to your Desktop. If a different location is selected, you will need to edit default path variables *CONFIG_PATH* and *CERT_PATH* inside certLoader.py script. 
+1. View and optionally [edit](#how-it-works) the targets.json file to confirm or update the list of certification authorities you want to install.
+1. At the operating system command line, run these commands: 
 
-### System requirements
+- Windows:
 
-Python v3.x is required to run the Trust Store Management Script. Additionally, on Windows, OpenSSL needs to be installed with an environment path variable set to support .p7b file generation.
-
-Your feedback is valued. If you have any questions or recommended updates for this script, please contact us at fpki@gsa.gov.
-
-### Running the script
-1. [Download](#download-location) the script .zip file and verify its hash
-1. Unpack the zip file to your Desktop. If a different location is selected, you will need to edit default path variables *CONFIG_PATH* and *CERT_PATH* inside certLoader.py script 
-1. View and optionally [edit](#how-it-works) the targets.json file to confirm or update the list of certification authorities targeted for installation.
-1. Execute the script by running the following command-line commands
-- On Windows:
     ```
     > cd Desktop\Trust_Store_Mangagement_Script_V1
     > certLoader.py
     ```
-- On macOS:
+    
+- macOS:
+
     ```
     $ cd Desktop/Trust_Store_Mangagement_Script_V1
     $ certLoader.py
     ```
-1. The resulting output file will be placed on your Desktop, unless the location was changed in certLoader.py
+    
+1. The You'll see the output file will appear ...on your Desktop, unless the location was changed in certLoader.py
 
-#### Sample Output - Windows
+#### Windows Example Output (.p7b)
+
+A hypothetical Windows user (Joe) selected a set of 46 certifications authorities using the _TRUE_/_FALSE_ method. Here is the output he saw:
 
 ```
 C:\Users\Joe.User\Desktop\Trust_Store_Mangagement_Script_V1>certLoader.py
@@ -578,18 +592,27 @@ THUMBPRINT: 671461948b8ef765fe5e1248222af3fcdd457564
 An installation file has been created at: C:\Users\Joe.User\Desktop\tsmt-output.p7b
 ```
 
-The sample output file created in the example above is found [here](../../tools/TSMS-V1/sample-tsmt-output.p7b).
+You can access the [Windows example output file](../../tools/TSMS-V1/sample-tsmt-output.p7b){:target="_blank"}.
 
-#### Sample Output - macOS
+#### macOS Example Output
 
-Output for running the Trust Store Management Script on macOS is the same as listed above for Windows.
+The Trust Store Management Script output format for macOS and iOS will be the same as for Windows.
 
-The sample output file created in the example above is found [here](../../tools/TSMS-V1/sample-tsmt-output.mobileconfig).
-
+You can access the [Apple example output file](../../tools/TSMS-V1/sample-tsmt-output.mobileconfig){:target="_blank"}.
 
 ### FAQs
-#### How often will it be updated?
-We anticipate this script being updated quarterly. 
 
-#### Who can I contact for help?
-Email us at fpki@gsa.gov. 
+#### How often will this script be updated?
+
+Quarterly or as often as needed. 
+
+#### How can I give feedback or suggestions?
+
+We welcome your feedback. You can comment or contribute in these ways: 
+
+* Create a new issue: GSA's GitHub [FPKI Guides issues](https://github.com/GSA/fpki-guides/issues){:target="_blank"}.
+* Email us:  **fpki@gsa.gov**.
+
+#### How can I get help?
+
+We're here for you.  Email us at fpki@gsa.gov **icam@gsa.gov?**
