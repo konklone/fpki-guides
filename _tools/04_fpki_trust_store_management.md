@@ -5,50 +5,49 @@ collection: tools
 permalink: tools/trust_store_management/
 ---
 
-The Trust Store Management Script is a simplified way to update your agency's trust stores and enable PIV login for users. 
+<!--Ryan: I couldn't sort out multi-adjective, multi-noun string (later on in Playbook): "PIV issuer certification authority (CA) signing certificates"?  Dpes this mean something like:  The subject "CA" of this string is Intermediate CA? that was issued a signing certificate by a Root CA? so the Intermediate CA is authorized to issue PIV certs? certificates to PIV users? The Intermediate CA is allowed to sign certificates like those for a PIV user? Because I don't know if I'm comprehending this phrase correctly, I may have misintrepted something below. -->
 
-You can select specific Certification Authority certificates and distribute them to devices or share them on an agency intranet website. <!--With all the CAs listed below, it appears that this script is not primarily about distributing COMMON due to removal from trust stores...? If shared on intranet websites, are files still primarily for network engineer use?-->
+You can update your agency's Microsoft and Apple trust stores by using the Trust Store Management Script (TSMS). 
 
-{% include alert-info.html content="You must be a network engineer or admnistrator to run this script." %}
+For these updates, TSMS allows you to specify Federal Common Policy CA (COMMON) and other [eligible certification authority certificates](#eligible-certification-authority-certificates) for output to a .p7b or .mobileconfig file.
 
+After installing the certificates<!--Are these the CA signing certs or PIV certs?-->, you can distribute them to devices or share them on an agency intranet website. <!--Who does the work of enabling PIV login if certs are shared via agency intranet site--the network engineers across an agency?-->
+
+<!--it appears that this script is not primarily about distributing COMMON due to removal from trust stores...? I added it. Hope this is okay. If shared on intranet websites, can only network engineers download from intranet sites?-->
+
+- [How This Works](#how-this-works)
 - [System Requirements](#system-requirements)
-- [Download Location](#download-location)
-- [How It Works](#how-it-works)
-- [Default Set of Certification Authority Certificates](#default-set-of-certification-authority-certificates)
+- [Download Script Package](#download-script-package)
 - [Run the Script](#run-the-script)
+- [Eligible Certification Authority Certificates](#eligible-certification-authority-certificates)
 - [FAQs](#faqs)
 
-### System Requirements To Run Script
-
-#### Microsoft Windows
-
-* _Python v3.x_
-* _OpenSSL_ and environment path variable set to support .p7b file generation <!--Specific example/actual environmental path variable setting = clarity for reader. OpenSSL is never mentioned again. How is it used?-->
-
-#### Apple macOS and iOS
-
-* _Python v3.x_
-
 ### How This Works
-<**Move this to intro?**>
-The script produces a .p7b file for Microsoft Windows and .mobileconfig files for Apple macOS and iOS. 
 
-- **Microsoft Windows**&mdash;This script compiles a .p7b file of your selected Certification Authorities' signing certificates for PIV issuers.<!--Is this correct?-->. You can use _certutil_ or a group policy object (GPO) to publish the file to domain controllers. This will help standardize agency trust store management processes.<!--Recommend deleting last sentence. Won't network eng./admin. already know this?-->
+- **Microsoft Windows**&mdash;This script assembles a .p7b file of your selected PIV-issuer, certification authority (CA) signing certificates. You can use _certutil_ or a group policy object (GPO) to distribute the file to domain controllers for installation.
 
-- **Apple macOS and iOS**&mdash;This script compiles an Apple Configuration Profile (.mobileconfig) of your selected Certification Authorities' signing certificates for PIV issuers.<!--Same question about PIV Issuers in MS above.-->You can distribute the .mobileconfig file to devices or share it on an agency intranet website.For details, see Apple [Installation Options](https://fpki.idmanagement.gov/truststores/apple/#installation-options/){:target="_blank"}.
+- **Apple macOS and iOS**&mdash;This script assembles an Apple Configuration Profile (.mobileconfig) of your selected PIV-issuer, CA signing certificates.
 
-### Download Location
+{% include alert-info.html content="These steps are for network engineers or admnistrators." %}
 
-The first step is to download the script installation package: [Trust Store Management Script](../../tools/TSMS-V1/Trust_Store_Mangagement_Script_V1.zip){:target="_blank"}.
+### System Requirements
+
+* **Microsoft Windows** - _Python v3.x_ and _OpenSSL_<!--The "setting" step should be in the OpenSSL section below but it's not mentioned again. How is OpenSSL used?-->
+> **Note:** Set OpenSSL environment path variable to support .p7b file generation. 
+
+* **Apple macOS and iOS** - _Python v3.x_
+
+### Download Script Installation Package (.zip)
+
+Download the script installation package: [Trust Store Management Script](../../tools/TSMS-V1/Trust_Store_Mangagement_Script_V1.zip){:target="_blank"}.
 
 #### Verify package authenticity
 
-You'll need to verify the authenticity of the downloaded .zip file. Its SHA-256 hash should be:<!--Is this what you meant?-->
+You'll need to verify the .zip package's authenticity: its SHA-256 hash should be:<!--Is this what you meant?-->
 
 ```
     EC2A7159E42CCA958190E50B18C6B35009234FD23B160731245239A09B36751A
 ```
-To verify the hash:
 
 * Windows:
 
@@ -64,16 +63,31 @@ To verify the hash:
 
 #### Verify package contents
 
-The script installation package (Trust_Store_Mangagement_Script_V1.zip) contains three artifacts:
+Verify that the Trust_Store_Mangagement_Script_V1.zip package contains three artifacts:
 
-1. **certLoader.py** - (Script) reads in the targets.json installation file and compiles the output file with your selected CA certificates.
-1. **id-fpki-common-auth** - (Directory) contains CA certificates for the eligible targets to install. 
-1. **targets.json** - (JSON file) contains attributes for the eligible list of CA targets to install.
+1. **certLoader.py** - This script reads in the targets.json install file and assembles the output file (i.e., desired CA certificates).
+1. **id-fpki-common-auth** - This directory contains the eligible CA certificates that could be installed.<!--The targets are/are not the certificates? What are the targets?--> 
+1. **targets.json** - This file contains the eligible CA certificates' attributes. (See attributes examples.)
 
 
-#### Attributes for each CA certificate
+##### Required CA certificate attributes and examples
 
-- **ID**: A unique integer ID (CA)
+<**Could we do it this way to save space and limit repeated information?**>
+
+| **Attribute** | **Definition**  | **Example**                      |
+| :-------- | :-------- | :-------------------------------     |
+| **ID**   | A unique integer ID for CA      | "ID": "00001"   |
+| **SUBJECT**   | CA subject name      | "Betrusted Production SSP CA A1" |
+| **ISSUER**  | CA issuer      | "Federal Common Policy CA"        | 
+| **VALIDFROM**  | Certificate validity start date      | "12/9/2010 19:55"        | 
+| **VALIDTO**  | Certificate validity end date      | "12/9/2020 19:49"       |
+| **SERIAL**  | Certificate serial number      | "19A"       |
+| **FILENAME**  | Certificate file name      | "Betrusted_Production_SSP_CA_A1.cer"      |
+| **THUMBPRINT**  | Certificate thumbprint (SHA-1 hash)      | "0601bbdad5a28231bc9436750b4f3a484bab06c3"      |
+| **INSTALL**  | Installation flag (either TRUE or FALSE)      | "TRUE"      |
+
+
+- **ID**: A unique integer ID for CA
 - **SUBJECT**: CA subject name
 - **ISSUER**:  CA issuer
 - **VALIDFROM**:  Certificate validity start date
@@ -83,8 +97,9 @@ The script installation package (Trust_Store_Mangagement_Script_V1.zip) contains
 - **THUMBPRINT**: Certificate thumbprint (SHA-1 hash)
 - **INSTALL**: Installation flag (either TRUE or FALSE)
 
+<!--Can we delete the end-of-line commas in next example or are they essential?-->
+##### Attributes example
 
-#### Attributes example<!--End commas essential? (Code?) There are no commas in attribute list above. Recommend deleting commas.-->:
 ```
     "ID": "00001",
     "SUBJECT": "Betrusted Production SSP CA A1",
@@ -97,14 +112,14 @@ The script installation package (Trust_Store_Mangagement_Script_V1.zip) contains
     "INSTALL": "TRUE"
 ```
 
-{% include alert-info.html content="All listed CA certificates are installed for the default set. If you want to OMIT specific CA certificates, set their installation flags to FALSE." %}
+{% include alert-info.html content="All listed CA certificates are installed with the default set. If you want to OMIT specific CA certificates, set their installation flags to FALSE." %}
 <**Add alert warning about never downloading a certificate file without first verifying it?**>
 
-### Eligible Certification Authority Certificates (Default Set)
-<!--Suggest we use a link to a separate file with this list.  The playbook is already quite long with the 46 CA certificates shown in the example from running the script.-->
-The default set of eligible Certification Authority certificates is shown below.
+### Eligible Certification Authority Certificates
+<!--Suggest we use a link to a separate file with this list.  The playbook is already long with the 46 CA certificates in the example from running the script.-->
+The default set of eligible certification authority certificates is shown below.
 
-{% include alert-info.html content="If your agency wants to add Certification Authority certificates to this list, please email us at fpki@gsa.gov." %}
+{% include alert-info.html content="If your agency wants to add certification authority certificates to this list, please email us at fpki@gsa.gov." %}
 
 
 | ID    | Subject                                                  | PIV Issuer                                | Valid From        | Valid To          | Serial Number                             |
@@ -157,7 +172,7 @@ The default set of eligible Certification Authority certificates is shown below.
 | 00046 | Veterans Affairs User   CA B1                            | Verizon SSP CA A2                     | 1/25/2017 4:59   | 1/25/2027 4:59   | 251EA36536CFEBB0E9D1334D0CB96102BAB16589 |
 
 
-### Run the Script **This could be combined with the "How the Script Works** section due to repeated, related steps?**
+### Run the Script 
 1. [Download](#download-location) the script .zip file and verify its hash. **Repeated step from above**
 1. Unpack the .zip file to your Desktop. If a different location is selected, you will need to edit default path variables *CONFIG_PATH* and *CERT_PATH* inside certLoader.py script. 
 1. View and optionally [edit](#how-it-works) the targets.json file to confirm or update the list of certification authorities you want to install. <!--This is where they set the installation flag to TRUE/FALSE depending on whether or not they want specific CA certificates?-->
@@ -180,8 +195,8 @@ The default set of eligible Certification Authority certificates is shown below.
 1. You'll see the output file appear on your Desktop, unless you changed the file destination in certLoader.py.
 
 #### Windows Example Output (.p7b)
-<!--Could this example be a smaller subset of eligible CA certs than 46?  Makes the Playbook long.-->
-A hypothetical Windows user (Joe) selected the following set of 46 Certification Authority certificates using the _TRUE_/_FALSE_ method. Here is the output he received:
+<!--Could this example be a smaller set of CA certs? Makes a long Playbook.-->
+A hypothetical Windows user (Joe) selected the following set of 46 certification authority certificates using the _TRUE_/_FALSE_ method. Here is his output (.p7b?):
 
 ```
 C:\Users\Joe.User\Desktop\Trust_Store_Mangagement_Script_V1>certLoader.py
@@ -621,7 +636,7 @@ Quarterly or as often as needed.
 
 #### How can I give feedback or suggestions?
 
-We welcome your feedback and contributions! Please reach out through GSA's GitHub [FPKI Guides issues](https://github.com/GSA/fpki-guides/issues){:target="_blank"} or email us at **fpki@gsa.gov**.
+We welcome your feedback and contributions! Please contact us through GSA's GitHub [FPKI Guides issues](https://github.com/GSA/fpki-guides/issues){:target="_blank"} or email us at **fpki@gsa.gov**.
 
 #### Where can I get help?
 
